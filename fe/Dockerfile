@@ -13,7 +13,7 @@ RUN pip install  \
           Flask \
           pyyaml
 
-EXPOSE 80
+EXPOSE 5000
 
 WORKDIR /root
 ADD config.yml config.yml
