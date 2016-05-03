@@ -20,7 +20,9 @@ def read_db_env_config(config):
     Args:
         config: dictionary containing the db default parameters
     """
-    config["host"] = os.environ.get("MYSQL_PORT_3306_TCP_ADDR", config["host"])
+    config["host"] = os.environ.get("DB_HOST", \
+        os.environ.get("MYSQL_PORT_3306_TCP_ADDR", config["host"]))
+
 
 
 def read_log_env_config(config):
