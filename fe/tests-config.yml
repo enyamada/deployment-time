@@ -1,0 +1,14 @@
+
+db:
+   host: localhost
+   db: deployments_tests
+   secret: yagg27
+   user: api
+
+log:
+   file: /var/log/deployments.log
+   level: debug
+   backup-count: 7
+   max-bytes: 5242880
+
+

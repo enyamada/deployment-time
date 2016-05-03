@@ -1,0 +1,27 @@
+POST /v1/steps
+- missing parameters
+- exceding parameters?
+- mock db_save_step (db_conn,values)
+
+
+GET /v1/steps
+- 
+
+
+valid_date_format (string)
+
+
+get_where_clause(request<-???)
+
+csv_format(cursor<--???)
+
+
+db_save_step(conn, step_data(dict)) <- ???
+
+verify_parameters(request, list-parameters(dict)) <--???
+
+
+
+
+
+

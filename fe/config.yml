@@ -1,0 +1,24 @@
+aws:
+   ami-id: ami-c229c0a2
+   spot-price: 0.015
+   instance-type: m3.medium
+   key-name: se-devops-test
+   sg-name: spot-temp-sg-xx
+
+app:
+   polling-interval: 60
+
+
+db:
+   host: localhost
+   db: deployments
+   secret: yagg27
+   user: api
+
+log:
+   file: /var/log/deployments.log
+   level: debug
+   backup-count: 7
+   max-bytes: 5242880
+
+
