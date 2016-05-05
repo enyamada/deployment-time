@@ -76,11 +76,8 @@ class ApiTestCase(unittest.TestCase):
         assert "200" in response.status
 
 
-# class FlaskrTestCase(unittest.TestCase):
-
 
 if __name__ == '__main__':
-
     unittest.main()
 
 
