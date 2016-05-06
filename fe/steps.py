@@ -9,7 +9,7 @@ import MySQLdb
 
 from time import gmtime, strftime
 from datetime import datetime
-from flask import Flask, jsonify, make_response, request
+from flask import Flask, jsonify, make_response, request, g
 from steps_logging import setup_logging
 from config import read_config
 import db
@@ -109,7 +109,8 @@ def process_deployment_step():
 
     # Try to store the dict into the database
     try:
-        db_save_step(db_conn, values)
+        db_save_step(g.db, values)
+
 
     except Exception as e:
         return make_response(
@@ -218,7 +219,7 @@ def list_steps():
 
     # Based on the supplied parameters, build and execute the SQL query against
     # the database to get the required list of deployment steps
-    cursor = db_conn.cursor(MySQLdb.cursors.DictCursor)
+    cursor = g.db.cursor(MySQLdb.cursors.DictCursor)
     where_clause = get_where_clause(request)
     cursor.execute("SELECT * FROM steps" + where_clause)
 
@@ -236,6 +237,24 @@ def not_found(error):
     """
     return make_response(jsonify({'error': 'Not found'}), 404)
 
+@app.before_request
+def before_request():
+    """
+    Before each http request, open a connection to the database according
+    the configured paramaters.
+    """
+    g.db = db.open_connection(config["db"])
+
+@app.teardown_request
+def teardown_request(exception):
+    """ 
+    After the completion of each http request, closes the database
+    connection.
+    """
+    db = getattr(g, 'db', None)
+    if db is not None:
+        db.close()
+
 
 def empty_db(db_conn):
     """
@@ -250,7 +269,7 @@ def empty_db(db_conn):
 def main():
     """ Main """
 
-    global db_conn
+    global config
 
     CONFIG_FILE = "config.yml"
     config = read_config(CONFIG_FILE)
@@ -258,12 +277,10 @@ def main():
 
     setup_logging(config["log"])
 
-    db_conn = db.open_connection(config["db"])
-
     app.run(host='0.0.0.0')
 
 
 if __name__ == '__main__':
-    db_conn = None
+    config = None
     main()
 

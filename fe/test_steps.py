@@ -29,9 +29,8 @@ class ApiTestCase(unittest.TestCase):
         docker run -p 3306:3306 --name db -e MYSQL_ROOT_PASSWORD=1234567 \
             -d enyamada/steps-db:1.0
         """
-        config = steps.read_config("tests-config.yml")
-        steps.db_conn = db.open_connection(config["db"])
-        steps.empty_db(steps.db_conn)
+        steps.config = steps.read_config("tests-config.yml")
+        steps.empty_db(db.open_connection(steps.config["db"]))
 
     def test_02_root(self):
         response = self.app.get("/")
