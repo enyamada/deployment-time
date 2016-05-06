@@ -85,7 +85,6 @@ def create_instance(sg_name, options):
             KeyName=key_name,
             UserData=user_data
         )
-        print "UD=%s" % user_data
 
     # Bail out if there's something wrong with the key pair supplied
     #except botocore.exceptions.ClientError as e:
@@ -207,31 +206,24 @@ def print_instructions(host_name):
     """
     Print instructions on how to proceed
     """
-
+    print
+    print
     print "Enjoy: Your server is %s. Please allow 10 min approx before testing." % (host_name)
     print
     print "Examples:"
     print
-    print "To schedule a new job to run 'hello-world' container at YYYY-MM-DD HH:MM:SS (GMT)"
-    print "(passing the env1 and env2 vars) and that should callback http://xxx.com when finished:"
+    print "To register a new deployment step:"
     print
-    print "curl -i -H \"Content-Type: application/json\" " \
-          "http://%s/v1/jobs -X POST -d " \
-          "'{\"docker_image\": \"hello-world\", \"datetime\": \"YYYY-MM-DD HH:MM:SS\", "  \
-          "\"callback\":\"http://xxx.com\", \"env_vars\":{\"env1\": \"v1\", \"env2\": \"v2\"}}'" \
-          % host_name
+    print "curl -i -X PUT 'http://%s/v1/steps?component=c1&version=v1&owner=o1&status=s1"
     print
+    print "To list all deployment steps stored:
     print
-    print "To check a job status:"
+    print "curl -i http://%s/v1/steps" % host_name
+    print "curl -i 'http://%s/v1/steps?start_datetime=2016-05-08%2013%3A00%3A00" % host_name
+    print "curl -i 'http://%s/v1/steps?owner=o1'" % host_name
+    print "curl -i 'http://%s/v1/steps?component=c1'" % host_name
+    print "curl -i 'http://%s/v1/steps?component=c1&owner=o1'" % host_name
     print
-    print "curl -i http://%s/v1/jobs/<job-id>" % host_name
-    print
-    print
-    print "To update a job callback to http://yyy.com:"
-    print
-    print "curl -i -H \"Content-Type: application/json\" " \
-          "http://%s/v1/jobs/<job-id> -X PUT -d " \
-          "'{\"callback\":\"http://yyy.com\"}'" % host_name
 
 
 
