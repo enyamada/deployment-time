@@ -7,9 +7,9 @@ Module containing some functions that handle the database.
 
 import logging
 import logging.handlers
+import MySQLdb
 from retrying import retry
 
-import MySQLdb
 
 MAX_CONN_RETRIES = 10
 CONN_RETRIES_INTERVAL = 5000
@@ -98,7 +98,7 @@ def open_connection(config):
 
     """
 
-    logging.debug ("Trying to connect to db")
+    logging.debug("Trying to connect to db")
     conn = MySQLdb.connect(config["host"], config["user"], config
                            ["secret"], config["db"])
     conn.autocommit(True)
