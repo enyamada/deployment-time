@@ -7,9 +7,12 @@ Module containing some functions that handle the database.
 
 import logging
 import logging.handlers
+from retrying import retry
 
 import MySQLdb
 
+MAX_CONN_RETRIES = 10
+CONN_RETRIES_INTERVAL = 5000
 
 def update_db(db_conn, job_id, **kwargs):
     """
@@ -77,6 +80,7 @@ def job_db_data(db_conn, job_id, *cols):
     return res
 
 
+@retry(wait_fixed=CONN_RETRIES_INTERVAL, stop_max_attempt_number=MAX_CONN_RETRIES)
 def open_connection(config):
     """
 
@@ -94,6 +98,7 @@ def open_connection(config):
 
     """
 
+    logging.debug ("Trying to connect to db")
     conn = MySQLdb.connect(config["host"], config["user"], config
                            ["secret"], config["db"])
     conn.autocommit(True)

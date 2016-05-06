@@ -1,5 +1,6 @@
 """
-
+Module that implements a REST API as described by Elo7 to help
+engineers to closely monitor the deployment times step-by-step.
 
 """
 
@@ -10,13 +11,11 @@ from time import gmtime, strftime
 from datetime import datetime
 from flask import Flask, jsonify, make_response, request
 from steps_logging import setup_logging
-
-
-
 from config import read_config
 import db
 
 
+# Instantiates a Flask app
 app = Flask(__name__)
 
 
@@ -30,7 +29,7 @@ def hello_world():
 
 def verify_parameters(request, list_mandatory_parameters):
     """
-    Verifies if all the expected/mandatory  parameters were actually passed in
+    Verifies if all the expected/mandatory parameters were actually passed in
     a given http request.
 
     Args:
@@ -103,7 +102,7 @@ def process_deployment_step():
         return make_response(jsonify({'Error':
                                       'Missing %s parameter' % values}), 400)
 
-    # Add a timestamp to the dict to be stored into DB
+    # Add a timestamp (UTC) to the dict to be stored into DB
     values["ts"] = strftime("%Y-%m-%d %H:%M:%S", gmtime())
 
     logging.debug("is_missing=%s, values=%s" % (is_missing, values))
@@ -211,8 +210,6 @@ def list_steps():
     (defaults to csv). A full list is returned unless other parameters are specified.
     """
 
-    # Todo: closing connection?
-
     # Check if supplied dates (if any) are in the expected format
     if not (valid_date_format(request.args.get("start_datetime")) and
             valid_date_format(request.args.get("end_datetime"))):
@@ -241,13 +238,17 @@ def not_found(error):
 
 
 def empty_db(db_conn):
-    
+    """
+    Empties the DB.
+    """
+
     cursor = db_conn.cursor()
-    cursor.execute ("TRUNCATE steps")
+    cursor.execute("TRUNCATE steps")
 
 
 
 def main():
+    """ Main """
 
     global db_conn
 

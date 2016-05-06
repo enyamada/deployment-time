@@ -11,7 +11,8 @@ RUN yum install -y \
 
 RUN pip install  \
           Flask \
-          pyyaml
+          pyyaml \
+          retrying
 
 EXPOSE 5000
 
