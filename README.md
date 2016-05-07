@@ -56,6 +56,8 @@ curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?start_
 curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?owner=o1'
 curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?component=c1'
 curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?component=c1&owner=o1'
+```
+
 #### Alguns detalhes 
 
 Basicamente criamos uma instância EC2 (t2.micro com Amazon Linux) e então, usado docker-compose, instanciamos dois contêineres: enyamada/steps-db (que é um MySQL com as bases de dados) e enyamada/steps-fe (o frontend).
