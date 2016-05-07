@@ -213,13 +213,13 @@ def print_instructions(host_name):
     print "Examples:"
     print
     print "To register a new deployment step:"
-    print
     print "curl -i -X POST 'http://%s/v1/steps?component=c1&version=v1&owner=o1&status=s1'" % host_name
     print
     print "To list all deployment steps stored:"
-    print
     print "curl -i http://%s/v1/steps" % host_name
-    print "curl -i 'http://%s/v1/steps?start_datetime=2016-05-08%%2013%%3A00%%3A00" % host_name
+    print
+    print "To list deployments filtered by specific parameters:"
+    print "curl -i 'http://%s/v1/steps?start_datetime=2016-05-08%%2013%%3A00%%3A00'" % host_name
     print "curl -i 'http://%s/v1/steps?owner=o1'" % host_name
     print "curl -i 'http://%s/v1/steps?component=c1'" % host_name
     print "curl -i 'http://%s/v1/steps?component=c1&owner=o1'" % host_name
