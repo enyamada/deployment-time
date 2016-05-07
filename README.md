@@ -5,7 +5,7 @@ Esta é uma solução para o problema de cálculo de duração de deployments co
 ## A API
 
 A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso esse é o nome do recurso central. As chamadas possíveis são:
-  - `POST /v1/steps?component=xx&version=yy&owner=zz&status=ww`: Esta chama registra dados sobre uma determinada fase do deployment. Os parâmetros (todos obrigatórios) são:
+  - `POST /v1/steps?component=xx&version=yy&owner=zz&status=ww`: Esta chamada registra dados sobre uma determinada fase de um deployment em andamento. Os parâmetros (todos obrigatórios) são:
     - _component_: nome do componente em deployment
     - _version_: versão do componente em questão 
     - _owner_: id do engenheiro reponsável
