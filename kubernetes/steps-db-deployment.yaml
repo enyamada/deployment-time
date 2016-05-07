@@ -1,0 +1,46 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: steps-db
+  # these labels can be applied automatically 
+  # from the labels in the pod template if not set
+  # labels:
+  #   app: redis
+  #   role: master
+  #   tier: backend
+spec:
+  # this replicas value is default
+  # modify it according to your case
+  replicas: 1
+  # selector can be applied automatically 
+  # from the labels in the pod template if not set
+  # selector:
+  #   matchLabels:
+  #     app: guestbook
+  #     role: master
+  #     tier: backend
+  # template describes the pods that must be instatiated if the current
+  # number of replicas is lower than specified
+  template:
+    metadata:
+      labels:
+        app: steps-api
+        tier: backend
+    spec:
+      containers:
+      - name: steps-db
+        image: enyamada/steps-db:1.0
+        env:
+        - name: MYSQL_ROOT_PASSWORD
+          value: Sdahlkj7%a
+        ports:
+        - containerPort: 3306
+        volumeMounts:
+        - mountPath: /var/lib/mysql
+          name: mysql-data-files
+      volumes:
+      - name: mysql-data-files
+        emptyDir: {}
+        #gcePersistentDisk:
+        #  pdName: mysql-disk
+        #  fsType: ext4

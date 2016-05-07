@@ -1,0 +1,38 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: steps-fe
+  # these labels can be applied automatically 
+  # from the labels in the pod template if not set
+  # labels:
+  #   app: redis
+  #   role: master
+  #   tier: backend
+spec:
+  # this replicas value is default
+  # modify it according to your case
+  replicas: 2
+  # selector can be applied automatically 
+  # from the labels in the pod template if not set
+  # selector:
+  #   matchLabels:
+  #     app: guestbook
+  #     role: master
+  #     tier: backend
+  template:
+    metadata:
+      labels:
+        app: steps-api
+        tier: frontend
+    spec:
+      containers:
+      - name: steps-fe
+        image: enyamada/steps-fe:1.0
+        imagePullPolicy: Always
+        env:
+        - name: DB_HOST
+          value: steps-db
+        - name: LOG_LEVEL
+          value: debug
+        ports:
+        - containerPort: 5000
