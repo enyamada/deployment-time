@@ -41,25 +41,24 @@ Em segundos o script deve imprimir o nome do servidor criado junto com alguns ex
 Hold on...
 
 
-Enjoy: Your server is ec2-52-67-13-82.sa-east-1.compute.amazonaws.com. Please allow 10 min approx before testing.
+Enjoy: Your server is ec2-52-67-24-253.sa-east-1.compute.amazonaws.com. Please allow 10 min approx before testing.
 
 Examples:
 
 To register a new deployment step:
-
-curl -i -X PUT 'http://%s/v1/steps?component=c1&version=v1&owner=o1&status=s1
+curl -i -X POST 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?component=c1&version=v1&owner=o1&status=s1'
 
 To list all deployment steps stored:
+curl -i http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps
 
-curl -i http://ec2-52-67-13-82.sa-east-1.compute.amazonaws.com/v1/steps
-.
-.
-.
-```
-
+To list deployments filtered by specific parameters:
+curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?start_datetime=2016-05-08%2013%3A00%3A00'
+curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?owner=o1'
+curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?component=c1'
+curl -i 'http://ec2-52-67-24-253.sa-east-1.compute.amazonaws.com/v1/steps?component=c1&owner=o1'
 #### Alguns detalhes 
 
-Basicamente criamos uma instância EC2 e então, usado docker-compose, instanciamos dois contêineres: enyamada/steps-db (que é um MySQL com as bases de dados) e enyamada/steps-fe (o frontend).
+Basicamente criamos uma instância EC2 (t2.micro com Amazon Linux) e então, usado docker-compose, instanciamos dois contêineres: enyamada/steps-db (que é um MySQL com as bases de dados) e enyamada/steps-fe (o frontend).
 
 
 
