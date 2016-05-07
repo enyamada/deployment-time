@@ -4,7 +4,9 @@ Esta é uma solução para o problema de cálculo de duração de deployments co
 
 ## A API
 
-A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso esse é o nome do recurso central. As chamadas possíveis são:
+A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso esse é o nome do recurso central. 
+
+As chamadas possíveis são:
   - `POST /v1/steps?component=xx&version=yy&owner=zz&status=ww`: Esta chamada registra dados sobre uma determinada fase de um deployment em andamento. Os parâmetros (todos obrigatórios) são:
     - _component_: nome do componente em deployment
     - _version_: versão do componente em questão 
@@ -17,9 +19,9 @@ A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso
     - _owner_: responsável.
     - _format_: Define o formado de saída. São suportados csv (default) ou json.
 
+A composição de mais de um parâmetro é suportada (caso em que ambos os filtros são aplicados simultaneamente).
 
-
-## Como executar
+## Execução do servidor
 
 O serviço foi dockerizado e o ambiente ideal para execução em produção seria em um cluster administrado por um software como o Swarm, AWS ECS, Kubernetes etc. 
 
@@ -90,6 +92,11 @@ Finalmente, de posse do endereço IP, podemos fazer as chamadas usando comandos 
 
 As instruções já são bastante simples mas, sendo necessário, tudo pode ser facilmente automatizado dentro de um shell script. 
 
+### Outras possíveis alternativas
+
+Outra alternativa natural é usar o Docker Swarm, e o mesmo [arquivo de docker compose](https://github.com/enyamada/deployment-time/blob/master/config/docker-compose/docker-compose.yml) poderia ser aqui usado também (embora usar uma rede com driver _overlay_ provavalmente seja uma ideia melhor). Suponho que não esteja no escopo deste exercício descrever como fazer o setup de tal cluster.
+
+É possível também separar uma máquina, configurá-la usando o Chef usando o [docker cookbook](https://supermarket.chef.io/cookbooks/docker) de modo a garantir que o próprio docker engine esteja instalado e rodando e o ambiente esteja pronto para rodar os contêineres.
 
 
 ## Alguns detalhes de implementação
@@ -100,5 +107,6 @@ Os testes foram implementados usando unittest.
 
 ### O que não foi feito (mas poderia/deveria ser feito nas iterações seguintes)
 
-* Segurança: nenhum tipo de autenticação ou autorização foi implementado. Na mesma linha, os dados submetidos pelo usuário não são "sanitizados".
-* 
+* Segurança: nenhum tipo de autenticação ou autorização foi implementado. 
+* Na mesma linha, os dados submetidos pelo usuário não são "sanitizados"; não há checagem se há tentativas de injeção de SQL, por exemplo.
+*
