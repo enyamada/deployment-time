@@ -68,9 +68,7 @@ Kubernetes deve alocar um endereço IP externo para o serviço _steps-fe_. Para 
 
 Finalmente, de posse do endereço IP, podemos fazer as chamadas usando comandos como ` curl -X POST 'ENDERECO-IP/v1/steps?component=c1&version=v1&owner=o1&status=s1'`
 
-Obviamente, tudo isso pode ser facilmente automatizado dentro de um shell script.
-
-Para testar, usei um cluster hospedado no google cloud.
+As instruções já são bastante simples mas, sendo necessário, tudo pode ser facilmente automatizado dentro de um shell script. 
 
 
 
