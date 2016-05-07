@@ -21,9 +21,11 @@ A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso
 
 ## Como executar
 
-O serviço foi "dockerizado" e o ambiente ideal para execução seria em um cluster (como o Swarm, AWS ECS, Kubernetes etc). 
+O serviço foi dockerizado e o ambiente ideal para execução em produção seria em um cluster administrado por um software como o Swarm, AWS ECS, Kubernetes etc. 
 
-Entendo (sem absoluta certeza) que a Elo7 adota o Kubernetes, e foi então essa a principal solução que estudei. Além disso, fiz uma versão mais simplificada (e que não depende de um cluster já existente) que usa um script para criar uma instância AWS EC2 com os contêineres já prontos em alguns minutos. Abaixo descrevo as opções.
+Entendo que a Elo7 adota o Kubernetes, e foi então essa a principal solução que estudei. 
+
+Porém, por não ter certeza da disponibildade um cluster como esse e para garantir que o serviço possa ser executado sem engasgos, fiz uma versão mais simplificada que usa um script para criar uma instância AWS EC2 com os contêineres já prontos em alguns minutos. Abaixo descrevo as opções.
 
 ### Usando AWS
 
@@ -66,7 +68,7 @@ Kubernetes deve alocar um endereço IP externo para o serviço _steps-fe_. Para 
 
 Finalmente, de posse do endereço IP, podemos fazer as chamadas usando comandos como ` curl -X POST 'ENDERECO-IP/v1/steps?component=c1&version=v1&owner=o1&status=s1'`
 
-Obviamente, tudo isso pode ser trivialmente automatizado num shell script.
+Obviamente, tudo isso pode ser facilmente automatizado dentro de um shell script.
 
 Para testar, usei um cluster hospedado no google cloud.
 
