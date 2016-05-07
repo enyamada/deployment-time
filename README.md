@@ -35,7 +35,27 @@ A partir de uma máquina com o docker engine instalado, basta chamar
 sudo docker run -it -e AWS_ACCESS_KEY_ID=XXX -e AWS_KEY_NAME=my-key-name -e AWS_SECRET_ACCESS_KEY=YYYY  enyamada/steps-launcher:1.0
 ```
 
-Em segundos o script deve imprimir o nome do servidor criado junto com alguns exemplos de execução. 
+Em segundos o script deve imprimir o nome do servidor criado junto com alguns exemplos de execução, como abaixo:
+
+```
+Hold on...
+
+
+Enjoy: Your server is ec2-52-67-13-82.sa-east-1.compute.amazonaws.com. Please allow 10 min approx before testing.
+
+Examples:
+
+To register a new deployment step:
+
+curl -i -X PUT 'http://%s/v1/steps?component=c1&version=v1&owner=o1&status=s1
+
+To list all deployment steps stored:
+
+curl -i http://ec2-52-67-13-82.sa-east-1.compute.amazonaws.com/v1/steps
+.
+.
+.
+```
 
 #### Alguns detalhes 
 
