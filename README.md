@@ -49,8 +49,7 @@ O serviço pode ser instalado em um cluster de containeres administrado por Kube
 
 ```sh
 $ git clone git@github.com:enyamada/deployment-time.git
-$ cd deployment-time
-$ kubectl -f kubernetes/
+$ kubectl -f deployment-time/config/kubernetes/
 ```
 
 O instanciamento dos pods pode demorar um pouco (em especial, porque as imagens estão no repositório público do docker e, portanto,. precisam ser baixadas de lá). A configuração prevê a criação de duas instâncias de pods de front end (_steps-fe_) e uma de banco de dados (_steps-db_).
