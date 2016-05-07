@@ -18,16 +18,6 @@ A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso
     - format: Define o formado de saída. São suportados csv (default) ou json.
 
 
-### Alguns detalhes de implementação
-
-O servidor foi codificado em Python+Flask. Os dados são persistidos em uma base MySQL. O enunciado do problema não detalha sobre o nível de escalabilidade e disponibilidade exigidos, então fiz algo que começa simples mas pode ser estendido se necessário. Pode-se argumentar que SQLite poderia ser usado, mas isso não traria mais simplicidade ao código (seria praticamente idêntico) e escalar seria mais complicado.
-
-Os testes foram implementados usando unittest.
-
-### O que não foi feito (mas poderia/deveria ser feito nas iterações seguintes)
-
-* Segurança: nenhum tipo de autenticação ou autorização foi implementado. Na mesma linha, os dados submetidos pelo usuário não são "sanitizados".
-* 
 
 ## Como executar
 
@@ -80,3 +70,15 @@ Obviamente, tudo isso pode ser trivialmente automatizado num shell script.
 
 Para testar, usei um cluster hospedado no google cloud.
 
+
+
+## Alguns detalhes de implementação
+
+O servidor foi codificado em Python+Flask. Os dados são persistidos em uma base MySQL. O enunciado do problema não detalha sobre o nível de escalabilidade e disponibilidade exigidos, então fiz algo que começa simples mas pode ser estendido se necessário. Pode-se argumentar que SQLite poderia ser usado, mas isso não traria mais simplicidade ao código (seria praticamente idêntico) e escalar seria mais complicado.
+
+Os testes foram implementados usando unittest.
+
+### O que não foi feito (mas poderia/deveria ser feito nas iterações seguintes)
+
+* Segurança: nenhum tipo de autenticação ou autorização foi implementado. Na mesma linha, os dados submetidos pelo usuário não são "sanitizados".
+* 
