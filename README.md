@@ -18,17 +18,40 @@ A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso
     - format: Define o formado de saída. São suportados csv (default) ou json.
 
 
-## Alguns detalhes de implementação
+### Alguns detalhes de implementação
 
-O servidor foi codificado em Python+Flask. Os dados são persistidos em uma base MySQL. O enunciado do problema não detalha sobre o nível de escalabilidade e disponibilidade exigidos, então fiz algo que começa simples mas pode ser estendido se necessário. Pode-se argumentar que SQLite poderia ser usado, mas isso não traria mais simplicidade ao código e escalar seria mais complicado.
+O servidor foi codificado em Python+Flask. Os dados são persistidos em uma base MySQL. O enunciado do problema não detalha sobre o nível de escalabilidade e disponibilidade exigidos, então fiz algo que começa simples mas pode ser estendido se necessário. Pode-se argumentar que SQLite poderia ser usado, mas isso não traria mais simplicidade ao código (seria praticamente idêntico) e escalar seria mais complicado.
 
 Os testes foram implementados usando unittest.
 
+### O que não foi feito (mas poderia/deveria ser feito nas iterações seguintes)
+
+* Segurança: nenhum tipo de autenticação ou autorização foi implementado. Na mesma linha, os dados submetidos pelo usuário não são "sanitizados".
+* 
+
+## Como executar
+
+O serviço foi "dockerizado" e o ambiente ideal para execução seria em um cluster (como o Swarm, AWS ECS, Kubernetes etc). 
+
+Entendo (sem absoluta certeza) que a Elo7 adota o Kubernetes, e foi então essa a principal solução que estudei. Além disso, fiz uma versão mais simplificada (e que não depende de um cluster já existente) que usa um script para criar uma instância AWS EC2 com os contêineres já prontos em alguns minutos. Abaixo descrevo as opções.
+
+### Usando AWS
+
+A partir de uma máquina com o docker engine instalado, basta chamar
+
+```sh
+sudo docker run -it -e AWS_ACCESS_KEY_ID=XXX -e AWS_KEY_NAME=my-key-name -e AWS_SECRET_ACCESS_KEY=YYYY  enyamada/steps-launcher:1.0
+```
+
+Em segundos o script deve imprimir o nome do servidor criado junto com alguns exemplos de execução. 
+
+#### Alguns detalhes 
+
+Basicamente criamos uma instância EC2 e então, usado docker-compose, instanciamos dois contêineres: enyamada/steps-db (que é um MySQL com as bases de dados) e enyamada/steps-fe (o frontend).
 
 
-## 
 
-### Kubernetes
+### Usando Kubernetes
 
 O serviço pode ser instalado em um cluster de containeres administrado por Kubernetes usando os seguinte comandos:
 
@@ -53,5 +76,7 @@ Kubernetes deve alocar um endereço IP externo para o serviço _steps-fe_. Para 
 
 Finalmente, de posse do endereço IP, podemos fazer as chamadas usando comandos como ` curl -X POST 'ENDERECO-IP/v1/steps?component=c1&version=v1&owner=o1&status=s1'`
 
-Todas as configurações foram testadas em um cluster hospedado no google cloud.
+Obviamente, tudo isso pode ser trivialmente automatizado num shell script.
+
+Para testar, usei um cluster hospedado no google cloud.
 
