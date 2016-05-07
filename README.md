@@ -6,16 +6,16 @@ Esta é uma solução para o problema de cálculo de duração de deployments co
 
 A Rest API implementada gira em torno de _steps_ (fases) de deployment, por isso esse é o nome do recurso central. As chamadas possíveis são:
   - `POST /v1/steps?component=xx&version=yy&owner=zz&status=ww`: Esta chama registra dados sobre uma determinada fase do deployment. Os parâmetros (todos obrigatórios) são:
-    - component: nome do componente em deployment
-    - version: versão 
-    - owner: id do engenheiro reponsável
-    - status: status
+    - _component_: nome do componente em deployment
+    - _version_: versão do componente em questão 
+    - _owner_: id do engenheiro reponsável
+    - _status_: status do processo
   - `GET /v1/steps?par1=v1&par2=v2...`: Obtém lista de fases registradas. Alguns parâmetros (todos opcionais) podem ser usados para filtragem:
-    - start_datatetime: restringe a busca à apenas fases que começaram depois da data/hora declarada. O formato esperado é AAAA-MM-DD hh:mm:ss, e sempre será interpretado como UTC. 
-    - end_datetime: considera apenas fases que terminaram até a data/hora especificada.
-    - component: componente desejado
-    - owner: responsável.
-    - format: Define o formado de saída. São suportados csv (default) ou json.
+    - _start_datatetime_: restringe a busca à apenas fases que começaram depois da data/hora declarada. O formato esperado é AAAA-MM-DD hh:mm:ss, e sempre será interpretado como UTC. 
+    - _end_datetime_: considera apenas fases que terminaram até a data/hora especificada.
+    - _component_: componente desejado
+    - _owner_: responsável.
+    - _format_: Define o formado de saída. São suportados csv (default) ou json.
 
 
 
