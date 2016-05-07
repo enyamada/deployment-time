@@ -56,7 +56,7 @@ Basicamente criamos uma instância EC2 e então, usado docker-compose, instancia
 O serviço pode ser instalado em um cluster de containeres administrado por Kubernetes usando os seguinte comandos:
 
 ```sh
-$ git@github.com:enyamada/deployment-time.git
+$ git clone git@github.com:enyamada/deployment-time.git
 $ cd deployment-time
 $ kubectl -f kubernetes/
 ```
