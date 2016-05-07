@@ -1,0 +1,31 @@
+version: '2'
+services:
+  fe:
+    image: enyamada/steps-fe:1.0
+    ports:
+     - "80:5000"
+    volumes:
+     - /var/log:/var/log 
+    networks:
+     - elo7
+    depends_on:
+     - db 
+    environment:
+     - DB_HOST=db
+     - LOG_LEVEL=debug
+  db:
+    image: enyamada/steps-db:1.0
+    volumes:
+     - /var/lib/mysql:/var/lib/mysql
+    networks:
+     elo7:
+       aliases:
+         - db
+    environment:
+     - MYSQL_ROOT_PASSWORD=Sdahlkj7%a
+
+
+
+networks:
+    elo7:
+      driver: bridge
