@@ -11,10 +11,10 @@ from time import gmtime, strftime
 from datetime import datetime
 from flask import Flask, jsonify, make_response, request, g
 from steps_engine.steps_logging import setup_logging
-from steps_engine.config import read_config
 import steps_engine.db
 from steps_engine.my_date import Date
 from steps_engine.step import Step
+from steps_engine.config import Config
 
 
 # Instantiates a Flask app
@@ -119,7 +119,7 @@ def before_request():
     Before each http request, open a connection to the database according
     the configured paramaters.
     """
-    g.db = steps_engine.db.open_connection(config["db"])
+    g.db = steps_engine.db.open_connection(config.options["db"])
 
 @app.teardown_request
 def teardown_request(exception):
@@ -148,10 +148,10 @@ def main():
     global config
 
     CONFIG_FILE = "config.yml"
-    config = read_config(CONFIG_FILE)
-    logging.debug("Config read: %s", config)
+    config = Config(CONFIG_FILE)
+    logging.debug("Config read: %s", config.options)
 
-    setup_logging(config["log"])
+    setup_logging(config.options["log"])
 
     app.debug = True
     app.run(host='0.0.0.0', port=80)
