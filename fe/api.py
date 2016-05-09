@@ -13,7 +13,7 @@ from flask import Flask, jsonify, make_response, request, g
 from steps_engine.steps_logging import setup_logging
 from steps_engine.config import read_config
 import steps_engine.db
-from my_date import Date
+from steps_engine.my_date import Date
 from steps_engine.step import Step
 
 

@@ -8,17 +8,12 @@ import logging
 import MySQLdb
 
 from time import gmtime, strftime
-from datetime import datetime
-from flask import Flask, jsonify, make_response, request, g
-from steps_logging import setup_logging
-from config import read_config
-import db
-from  my_date import Date
+from flask import jsonify, make_response,  g
+from steps_engine.my_date import Date
 
 
+class Step(object):
 
-class Step:
-    
     def __init__(self, values):
 
         self.component = values['component']
@@ -26,20 +21,19 @@ class Step:
         self.owner = values['owner']
         self.status = values['status']
         self.ts = strftime("%Y-%m-%d %H:%M:%S", gmtime())
-  
 
     def db_save(self, db_conn):
         """
         Saves the deployment step data into a database.
-    
+
         Args:
            db_conn: db connection
         """
 
         # Build the SQL columns and values list with the step data
         col_list = "component, version, owner, status, ts"
-        values_list = "'%s', '%s', '%s', '%s', '%s'" % (self.component, 
-            self.version, self.owner, self.status, self.ts)
+        values_list = "'%s', '%s', '%s', '%s', '%s'" % (
+            self.component, self.version, self.owner, self.status, self.ts)
 
         # Try to insert the new schedule into the database. If it fails, return
         # -1, otherwise, return the scheduled job id.
@@ -77,7 +71,6 @@ class Step:
 
         return res
 
-
     @staticmethod
     def _get_where_clause(request):
         """
@@ -93,7 +86,7 @@ class Step:
         """
 
         clause = ""
-    
+
         if request.args.get("component"):
             clause += "component='%s' AND " % request.args.get("component")
 
@@ -115,7 +108,6 @@ class Step:
 
         logging.debug("Clause=%s" % clause)
         return clause
-
 
     @staticmethod
     def list(request):
@@ -145,10 +137,3 @@ class Step:
             return jsonify(steps=cursor.fetchall()), 200
         else:
             return Step._csv_format(cursor), 200
-
-
-
-
-
-
-
