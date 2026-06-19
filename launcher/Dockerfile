@@ -1,18 +1,21 @@
-FROM centos:7
-MAINTAINER "Edson Yamada" <enyamada@gmail.com>
+FROM python:3.11-slim
+LABEL maintainer="Edson Yamada <enyamada@gmail.com>"
 
-RUN rpm -Uvh http://download.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-5.noarch.rpm
+# O debian-slim não vem com curl/bash por padrão se os seus scripts .sh precisarem,
+# mas o gcc e o pip já estão resolvidos nativamente pelo Python base.
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN yum install -y \
-          gcc \
-          python-pip 
-
-RUN pip install  \
-          boto3 
-
+# Instala o boto3 direto usando o pip nativo da imagem
+RUN pip install --no-cache-dir boto3
 
 WORKDIR /root
-ADD aws/* /root/.aws/
-ADD *.py /root/
-ADD *.sh /root/
-CMD /root/launcher.py
+
+# Copia os arquivos necessários
+COPY aws/ /root/.aws/
+COPY *.py /root/
+COPY *.sh /root/
+
+# Garante permissão de execução nos scripts shell (boa prática para o container)
+RUN chmod +x /root/*.sh
