@@ -1,0 +1,52 @@
+name: Build Dinâmico de Múltiplos Containers
+
+on:
+  push:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-containers:
+    runs-on: ubuntu-latest
+    
+    # Aqui a mágica do LOOP acontece
+    strategy:
+      matrix:
+        # Você lista aqui o nome das pastas (que também serão os sufixos das imagens)
+        servico: [db, fe, launcher]
+
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: Checkout do código
+        uses: actions/checkout@v4
+
+      - name: Logar no GHCR
+        uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      # O metadata-action agora usa a variável da matriz para o nome da imagem
+      - name: Extrair metadados do Docker
+        id: meta
+        uses: docker/metadata-action@v5
+        with:
+          # Vai gerar: seu-repo-frontend, seu-repo-backend, etc.
+          images: ghcr.io/${{ github.repository }}-${{ matrix.servico }}
+          tags: |
+            type=sha
+            type=ref,event=branch
+
+      # O build-push-action usa a variável para achar a pasta correta
+      - name: Build e Push da Imagem Docker
+        uses: docker/build-push-action@v5
+        with:
+          context: ./${{ matrix.servico }}       # <--- Loop na pasta!
+          file: ./${{ matrix.servico }}/Dockerfile # <--- Loop no Dockerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
