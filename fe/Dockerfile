@@ -1,22 +1,23 @@
-FROM centos:7
-MAINTAINER "Edson Yamada" <enyamada@gmail.com>
+FROM python:2.7-slim
+LABEL maintainer="Edson Yamada <enyamada@gmail.com>"
 
-RUN rpm -Uvh http://dl.fedoraproject.org/pub/epel/7/x86_64/e/epel-release-7-6.noarch.rpm
+# Instala as ferramentas de compilação e as bibliotecas de desenvolvimento do MySQL (MariaDB no Debian)
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    gcc \
+    default-libmysqlclient-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-RUN yum install -y \
-          gcc \
-          mysql-devel \
-          MySQL-python \
-          python-pip 
-
-RUN pip install  \
-          Flask \
-          pyyaml \
-          retrying
+# Instala as dependências do Python. O pip vai compilar o MySQL-python usando o gcc local
+RUN pip install --no-cache-dir \
+    MySQL-python \
+    Flask \
+    pyyaml \
+    retrying
 
 EXPOSE 5000
 
 WORKDIR /root
-ADD config.yml config.yml
-ADD *.py /root/
-CMD python steps.py 
+COPY config.yml config.yml
+COPY *.py /root/
+
+CMD ["python", "steps.py"]
